@@ -1,0 +1,76 @@
+#!/usr/bin/env node
+
+const download = require('download-git-repo')
+const program = require('commander')
+const exists = require('fs').existsSync
+const path = require('path')
+const ora = require('ora')
+const chalk = require('chalk')
+const inquirer = require('inquirer')
+const rm = require('rimraf').sync
+const checkVersion = require('../lib/check-version')
+
+program
+  .usage('[project-name]')
+
+program.on('--help', () => {
+  console.log('  Examples:')
+  console.log()
+  console.log(chalk.gray('    # create a new project with an official project'))
+  console.log('    $ delicate init my-project')
+  console.log()
+})
+
+function help () {
+  program.parse(process.argv)
+  if (program.args.length < 1) return program.help()
+}
+help()
+
+const rawName = program.args[0]
+const inPlace = !rawName || rawName === '.'
+const to = path.resolve(rawName || '.')
+
+console.log()
+process.on('exit', () => {
+  console.log()
+})
+
+if (inPlace || exists(to)) {
+  inquirer.prompt([{
+    type: 'confirm',
+    message: inPlace
+      ? 'Generate project in current directory?'
+      : 'Target directory exists. Continue?',
+    name: 'ok'
+  }]).then(answers => {
+    if (answers.ok) {
+      run()
+      }
+    }).catch(err => {  
+      console.error(chalk.red(err)) 
+    })
+} else {
+  run()
+}
+
+function run () {
+  // 检测cli的版本
+	checkVersion(() => {
+		downloadDelicate()
+	})
+}
+
+// 下载仓库地址
+function downloadDelicate () {
+  const spinner = ora(`downloading delicate to ${chalk.green(rawName)}`)
+  spinner.start()
+  
+  //目录存在则先删除
+	if (exists(rawName)) rm(rawName)
+
+  //去github克隆
+  download('delicatejs/delicatejs', rawName, { clone: false }, err => {
+    spinner.stop()
+  })
+}
