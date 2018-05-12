@@ -21,13 +21,7 @@ program.on('--help', () => {
   console.log()
 })
 
-function help () {
-  program.parse(process.argv)
-  if (program.args.length < 1) return program.help()
-}
-help()
-
-const rawName = program.args[0]
+const rawName = program.args ? program.args[0] : './'
 const inPlace = !rawName || rawName === '.'
 const to = path.resolve(rawName || '.')
 
@@ -62,8 +56,8 @@ function run () {
 }
 
 // 下载仓库地址
-function downloadDelicate () {
-  const spinner = ora(`downloading delicate to ${chalk.green(rawName)}`)
+function downloadDelicate() {
+  const spinner = ora(`downloading delicate ${rawName !== './' ? `to ${chalk.green(rawName)}` : ''}`)
   spinner.start()
   
   //目录存在则先删除
@@ -73,7 +67,7 @@ function downloadDelicate () {
   download('delicatejs/delicatejs', rawName, { clone: false }, err => {
     spinner.stop()
     console.log(`--------------------${chalk.green('success')}--------------------`)
-    console.log(`cd ${rawName}`)
+    rawName !== './' && console.log(`cd ${rawName}`)
     console.log(`npm install`)
   })
 }
