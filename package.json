@@ -1,11 +1,7 @@
 {
   "name": "delicate-cli",
   "version": "1.0.2",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "delicatejs项目初始化工具",
   "bin": {
     "delicate": "bin/delicate"
   },
@@ -13,8 +9,13 @@
     "type": "git",
     "url": "git+https://github.com/delicatejs/delicate-cli.git"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "delicatejs",
+    "cli",
+    "nodejs"
+  ],
+  "author": "Topthinking",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/delicatejs/delicate-cli/issues"
   },
