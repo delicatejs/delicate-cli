@@ -12,6 +12,7 @@ const checkVersion = require('../lib/check-version')
 
 program
   .usage('[project-name]')
+  .parse(process.argv)
 
 program.on('--help', () => {
   console.log('  Examples:')

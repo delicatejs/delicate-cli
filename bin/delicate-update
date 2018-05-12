@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+const download = require('download-git-repo')
+const program = require('commander')
+const fs = require('fs-extra')
+const path = require('path')
+const ora = require('ora')
+const chalk = require('chalk')
+const rm = require('rimraf').sync
+const checkVersion = require('../lib/check-version')
+
+program.on('--help', () => {
+  console.log('  Examples:')
+  console.log()
+  console.log('    $ delicate update')
+  console.log()
+})
+
+console.log()
+process.on('exit', () => {
+  console.log()
+})
+
+checkVersion(() => {
+  downloadDelicate()
+})
+
+// 下载仓库地址
+function downloadDelicate() {
+  const spinner = ora(`update delicate`)
+  spinner.start()
+  
+  const rawName = path.join(process.cwd(), './.delicate')  
+  //目录存在则先删除
+	rm(rawName)
+
+  //去github克隆
+  download('delicatejs/delicatejs', rawName, { clone: false }, err => {
+    spinner.stop()
+    rm(path.join(process.cwd(), 'system'))     
+    fs.moveSync(path.join(rawName, 'system'), path.join(process.cwd(), 'system'))  
+    rm(rawName)
+    console.log(`--------------------${chalk.green('update success')}--------------------`)
+    console.log()
+    console.log(chalk.yellow('🤝 如果有新的依赖，请在启动服务时，根据错误提示自行安装依赖模块'))
+  })
+}
