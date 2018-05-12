@@ -72,5 +72,8 @@ function downloadDelicate () {
   //去github克隆
   download('delicatejs/delicatejs', rawName, { clone: false }, err => {
     spinner.stop()
+    console.log(`--------------------${chalk.green('success')}--------------------`)
+    console.log(`cd ${rawName}`)
+    console.log(`npm install`)
   })
 }
