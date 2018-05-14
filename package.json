@@ -1,6 +1,6 @@
 {
   "name": "delicate-cli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "delicatejs项目初始化工具",
   "bin": {
     "delicate": "bin/delicate"
@@ -24,6 +24,7 @@
     "chalk": "^2.4.1",
     "commander": "^2.15.1",
     "download-git-repo": "^1.0.2",
+    "fs-extra": "^6.0.1",
     "inquirer": "^5.2.0",
     "ora": "^2.1.0",
     "request": "^2.85.0",
